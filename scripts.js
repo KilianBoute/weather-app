@@ -13,6 +13,7 @@ const searchInput = document.querySelector('#search-input');
 const locationDisplay = document.querySelector('#location-display');
 const weatherDisplay = document.querySelector('#weather-display');
 
+const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 searchBarForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -36,6 +37,8 @@ const getLocationList = (location) => {
 const displayLocations = (location) => {
     const locationItem = document.createElement('div');
     locationItem.textContent = location.name + " in " + location.admin1 + ", " + location.country;
+    locationItem.classList.add("location-item");
+    locationItem.classList.add("card");
     locationItem.longitude = location.longitude;
     locationItem.latitude = location.latitude;
     locationItem.timeZone = location.timezone;
@@ -59,7 +62,21 @@ const getWeatherForLocation = (longitude, latitude) => {
 
 const displayWeatherForLocation = (locationData) => {
     const weatherItem = document.createElement("div");
-    console.log(weatherDisplay + " en " + weatherItem) 
-    weatherItem.textContent = locationData.temperature_2m_max;
+   
+    for(i = 0; i < locationData.temperature_2m_max.length; i++){
+        const dailyInfo = document.createElement('span');
+            dailyInfo.classList.add('daily-info');
+            dailyInfo.classList.add("card");
+        const dailyInfoDate = document.createElement('p');
+        let timeDate = new Date(locationData.time[i]);
+            dailyInfoDate.textContent = weekdays[timeDate.getDay()];
+        const dailyInfoMeanTemp = document.createElement('p');
+            let meanTemp = (locationData.temperature_2m_max[i] + locationData.temperature_2m_min[i])/2;
+            dailyInfoMeanTemp.textContent = "°C " + meanTemp.toFixed(2);
+        dailyInfo.appendChild(dailyInfoDate);
+        dailyInfo.appendChild(dailyInfoMeanTemp);
+        weatherItem.appendChild(dailyInfo);
+    }
+    // weatherItem.textContent = locationData.temperature_2m_max;
     weatherDisplay.appendChild(weatherItem);
 }
