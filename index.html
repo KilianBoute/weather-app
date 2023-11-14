@@ -4,24 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>weather app</title>
+    <script src="https://kit.fontawesome.com/bd0e2c5b6f.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
     <script defer src="scripts.js"></script>
 </head>
 <body>
     <header>
-
+        <div id='logo'></div>  
+        <form id="search-bar">                             
+            <label><input type="text" id="search-input" class="search-field" placeholder="City" value="Ghent"/><p id="errorInput"></p></label>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></i></button>
+         </form>    
     </header>
     <main>
-        <form id="search-bar">                                            
-            <label><input type="text" id="search-input" class="search-field" placeholder="City" value="Ghent"/><p id="errorInput"></p></label>
-            <button type="submit">Submit</button>
-         </form>
-         <div id="location-display">
-
-         </div>
-         <div id="weather-display">
-
-         </div>
+         <div class="empty" id="location-display"></div>
+         <div id="weather-display"></div>
         </main>
     <footer>
 
