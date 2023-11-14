@@ -21,16 +21,19 @@ const getLocationList = (location) => {
             .then(data => {
                 data.results.forEach(city => {
                    displayLocations(city);
+
                    return true;
                 });
             })
             .catch(error => {
                 console.log(error);
+                locationDisplay.style.display = "none"; 
                 return false;
             });
 }
 
 const displayLocations = (location) => {
+    locationDisplay.style.display = "flex";
     const locationItem = document.createElement('div');
     locationItem.textContent = location.name + " in " + location.admin1 + ", " + location.country;
     locationItem.classList.add("location-item");
@@ -40,6 +43,7 @@ const displayLocations = (location) => {
     locationItem.timeZone = location.timezone;
     locationItem.addEventListener('click', () => {
         weatherDisplay.innerHTML = locationDisplay.innerHTML = "";
+        locationDisplay.style.display = "none";
         console.log(locationItem.longitude + " " + locationItem.latitude + " " + locationItem.timeZone);
         getWeatherForLocation(locationItem.longitude, locationItem.latitude, locationItem.timeZone);
     })
