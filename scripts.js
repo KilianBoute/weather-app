@@ -15,13 +15,14 @@ const weatherDisplay = document.querySelector('#weather-display');
 
 const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
+
+
 const getLocationList = (location) => {
     fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + location + "&count=10&language=en&format=json")
         .then(response => response.json())
             .then(data => {
                 data.results.forEach(city => {
                    displayLocations(city);
-
                    return true;
                 });
             })
@@ -61,6 +62,8 @@ const getWeatherForLocation = (longitude, latitude) => {
 }
 
 const displayWeatherForLocation = (locationData) => {
+    const cityDisplay = document.createElement('div');
+        const cityDisplayName = document.createElement('h1');
     const weatherItem = document.createElement("div");
    
     for(i = 0; i < locationData.temperature_2m_max.length; i++){
@@ -81,16 +84,25 @@ const displayWeatherForLocation = (locationData) => {
     weatherDisplay.appendChild(weatherItem);
 }
 
+async function getWeatherOnSubmit(location) {
+    const response = await fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + location + "&count=10&language=en&format=json")
+    const data = await response.json();
+    locationDisplay.style.display = "none";
+    getWeatherForLocation(data.results[0].longitude, data.results[0].latitude);
+}
+
 searchBarForm.addEventListener('submit', (e) => {
     e.preventDefault();
     weatherDisplay.innerHTML = locationDisplay.innerHTML = "";
-    getLocationList(searchInput.value);
+    getWeatherOnSubmit(searchInput.value);
 })
 
 searchBarForm.addEventListener('keyup', (e) => {
+    if(e.key !== "Enter"){
     e.preventDefault();
     weatherDisplay.innerHTML = locationDisplay.innerHTML = "";
     if(getLocationList(searchInput.value)){
     getLocationList(searchInput.value);
     }
+}
 })
