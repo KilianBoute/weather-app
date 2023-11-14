@@ -127,13 +127,13 @@ header{
 }
 
 @media (min-width: 750px){
-    .cards-container{
+    #cards-container{
     grid-template-columns: repeat(4, 1fr);
     }
 } 
 
 @media (min-width: 1000px){
-    .cards-container{
+    #cards-container{
     grid-template-columns: repeat(7, 1fr);
     }
 } 
