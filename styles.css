@@ -82,11 +82,10 @@ header{
     border-top: none;
     padding-bottom: .5rem;
     border-radius: 1rem;
+    max-height: 40vh;
+    overflow-y: scroll;
 }
 
-div:empty{
-   display: none;
-}
 
 .location-item{
     padding-left: .75rem;
@@ -103,7 +102,7 @@ div:empty{
     text-align: center;
 }
 
-.cards-container{
+#cards-container{
     display: grid;
     width: 100%;
     gap: 1rem;
