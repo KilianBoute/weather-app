@@ -42,17 +42,17 @@ const getLocationList = (location) => {
 const displayLocations = (location) => {
     locationDisplay.style.display = "flex";
     const locationDiv = document.createElement('div');
-        locationDiv.className = "location-item";
+    locationDiv.className = "location-item";
     const locationFlag = document.createElement('img');
-        locationFlag.src = "https://hatscripts.github.io/circle-flags/flags/" + location.country_code.toLowerCase() + ".svg";
-        locationFlag.className = 'location-flag';
-        console.log(locationFlag.src)
+    locationFlag.src = "https://hatscripts.github.io/circle-flags/flags/" + location.country_code.toLowerCase() + ".svg";
+    locationFlag.className = 'location-flag';
+    console.log(locationFlag.src)
 
     locationDiv.appendChild(locationFlag);
 
     const locationItem = document.createElement('span');
     locationItem.textContent += location.name + " in " + location.admin1 + ", " + location.country;
-  
+
     locationItem.longitude = location.longitude;
     locationItem.latitude = location.latitude;
     locationItem.timeZone = location.timezone;
@@ -74,8 +74,8 @@ const displayLocations = (location) => {
 }
 
 const getWeatherForLocation = (longitude, latitude, name, area, country) => {
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude="+ longitude + 
-    "&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto")
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude +
+        "&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto")
         .then(response => response.json())
         .then(data => {
             displayWeatherForLocation(data, name, area, country);
@@ -85,33 +85,33 @@ const getWeatherForLocation = (longitude, latitude, name, area, country) => {
 const displayWeatherForLocation = (locationData, name, area, country) => {
 
     const locationHeader = document.createElement('h1');
-        locationHeader.textContent = name;
+    locationHeader.textContent = name;
     const locationArea = document.createElement('h3');
-        locationArea.textContent = area + " " + country;
+    locationArea.textContent = area + " " + country;
 
     locationInfo.appendChild(locationHeader);
     locationInfo.appendChild(locationArea);
 
     for (let i = 0; i < locationData.daily.time.length; i++) {
         const cardElement = document.createElement('div');
-            cardElement.className = "card";
-            cardElement.selected = false;
+        cardElement.className = "card";
+        cardElement.selected = false;
         const cardDay = document.createElement('h3');
         let timeDate = new Date(locationData.daily.time[i]);
-            if(i === 0){cardDay.textContent = "Today";}
-            else {cardDay.textContent = weekdays[timeDate.getDay()];}
-            
+        if (i === 0) { cardDay.textContent = "Today"; }
+        else { cardDay.textContent = weekdays[timeDate.getDay()]; }
+
         const cardImage = document.createElement('img');
         const imgSrc = weatherCodes[locationData.daily.weather_code[i]].day.image;
-            cardImage.src = imgSrc;
+        cardImage.src = imgSrc;
 
         const cardDesc = document.createElement('span');
-            cardDesc.textContent = weatherCodes[locationData.daily.weather_code[i]].day.description;
+        cardDesc.textContent = weatherCodes[locationData.daily.weather_code[i]].day.description;
 
         const cardTemp = document.createElement('span');
         let meanTemp = (locationData.daily.temperature_2m_max[i] + locationData.daily.temperature_2m_min[i]) / 2;
-            cardTemp.textContent =meanTemp.toFixed(2) + "°C ";
-       
+        cardTemp.textContent = meanTemp.toFixed(2) + "°C ";
+
         cardElement.appendChild(cardDay);
         cardElement.appendChild(cardImage);
         cardElement.appendChild(cardDesc);
@@ -121,7 +121,7 @@ const displayWeatherForLocation = (locationData, name, area, country) => {
         cardElement.addEventListener('click', () => {
 
             cardContainer.childNodes.forEach(element => {
-                if(element.selected === true) {
+                if (element.selected === true) {
                     element.selected = false;
                     element.classList.remove('selected');
                 }
@@ -129,7 +129,7 @@ const displayWeatherForLocation = (locationData, name, area, country) => {
             cardElement.selected = true;
             cardElement.classList.add('selected');
             const removeDisplay = document.getElementById('hoursOfDay');
-            if(removeDisplay){
+            if (removeDisplay) {
                 cardContainer.removeChild(removeDisplay);
             }
             const newHourlyDisplay = displayHourlyWeather(locationData, i);
@@ -142,11 +142,11 @@ const displayWeatherForLocation = (locationData, name, area, country) => {
             // }
             newHourlyDisplay.classList.add('hour-display');
             cardContainer.appendChild(newHourlyDisplay);
-            
+
         })
-        cardElement.tabindex=0;
+        cardElement.tabindex = 0;
         cardContainer.appendChild(cardElement);
- 
+
     }
 
     // weatherItem.textContent = locationData.temperature_2m_max;
@@ -159,26 +159,26 @@ const displayHourlyWeather = (locationData, index) => {
 
 
     let h = 0;
-    for(let i = index*24; i < (index+1)*24; i++){
-     
+    for (let i = index * 24; i < (index + 1) * 24; i++) {
+
         const hourDiv = document.createElement('div');
-            hourDiv.classList.add('hour-card');
+        hourDiv.classList.add('hour-card');
         const hourDivTime = document.createElement('span');
-            hourDivTime.textContent = locationData.hourly.time[i].substring(11);
+        hourDivTime.textContent = locationData.hourly.time[i].substring(11);
         const hourDivIcon = document.createElement('img');
-            hourDivIcon.src = (h<20 && h>5) ? weatherCodes[locationData.hourly.weather_code[i]].night.image : weatherCodes[locationData.hourly.weather_code[i]].day.image;
-            
+        hourDivIcon.src = (h < 20 && h > 5) ? weatherCodes[locationData.hourly.weather_code[i]].night.image : weatherCodes[locationData.hourly.weather_code[i]].day.image;
+
         const hourDivTemp = document.createElement('span');
-            hourDivTemp.textContent = locationData.hourly.temperature_2m[i] + "°C";
+        hourDivTemp.textContent = locationData.hourly.temperature_2m[i] + "°C";
 
         hourDiv.appendChild(hourDivTime);
         hourDiv.appendChild(hourDivIcon);
         hourDiv.appendChild(hourDivTemp);
-    
+
         hourlyDisplay.appendChild(hourDiv);
-        hourDiv.tabindex=0;
+        hourDiv.tabindex = 0;
         hourlyDisplay.id = 'hoursOfDay';
-        
+
         h++;
     }
     return hourlyDisplay;
@@ -205,46 +205,46 @@ searchBarForm.addEventListener('submit', (e) => {
 searchBarForm.addEventListener('keyup', (e) => {
     if (e.key !== "Enter") {
         e.preventDefault();
-    //     locationInfo.innerHTML = "";
-    //     cardContainer.innerHTML = "";
-    //    locationDisplay.innerHTML = "";
+        //     locationInfo.innerHTML = "";
+        //     cardContainer.innerHTML = "";
+        //    locationDisplay.innerHTML = "";
         if (getLocationList(searchInput.value)) {
             getLocationList(searchInput.value);
         }
     }
 })
 
- getWeatherOnSubmit("Ghent");
+getWeatherOnSubmit("Ghent");
 
 const getGeoLocation = () => {
-// Check if geolocation is supported by the browser
-if ("geolocation" in navigator) {
-    // Prompt user for permission to access their location
-    navigator.geolocation.getCurrentPosition(
-      // Success callback function
-      (position) => {
-        // Get the user's latitude and longitude coordinates
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-  
-        // Do something with the location data, e.g. display on a map
-        console.log(`Latitude: ${lat}, longitude: ${lng}`);
-        locationInfo.innerHTML = "";
-        cardContainer.innerHTML = "";
-        getWeatherForLocation(lng, lat, "Current location", "", "");
-      },
-      // Error callback function
-      (error) => {
-        // Handle errors, e.g. user denied location sharing permissions
-        console.error("Error getting user location:", error);
+    // Check if geolocation is supported by the browser
+    if ("geolocation" in navigator) {
+        // Prompt user for permission to access their location
+        navigator.geolocation.getCurrentPosition(
+            // Success callback function
+            (position) => {
+                // Get the user's latitude and longitude coordinates
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                // Do something with the location data, e.g. display on a map
+                console.log(`Latitude: ${lat}, longitude: ${lng}`);
+                locationInfo.innerHTML = "";
+                cardContainer.innerHTML = "";
+                getWeatherForLocation(lng, lat, "Current location", "", "");
+            },
+            // Error callback function
+            (error) => {
+                // Handle errors, e.g. user denied location sharing permissions
+                console.error("Error getting user location:", error);
+                getWeatherOnSubmit("Ghent");
+            }
+        );
+    } else {
+        // Geolocation is not supported by the browser
+        console.error("Geolocation is not supported by this browser.");
         getWeatherOnSubmit("Ghent");
-      }
-    );
-  } else {
-    // Geolocation is not supported by the browser
-    console.error("Geolocation is not supported by this browser.");
-    getWeatherOnSubmit("Ghent");
-  }
+    }
 }
 
 //getGeoLocation();
