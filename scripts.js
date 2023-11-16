@@ -118,6 +118,10 @@ const displayWeatherForLocation = (locationData, name, area, country) => {
 
         cardElement.hourly = locationData.hourly;
         cardElement.addEventListener('click', () => {
+            const removeDisplay = document.getElementById('hoursOfDay');
+            if(removeDisplay){
+                cardContainer.removeChild(removeDisplay);
+            }
             cardContainer.appendChild(displayHourlyWeather(locationData, i));
         })
         cardContainer.appendChild(cardElement);
@@ -150,6 +154,7 @@ const displayHourlyWeather = (locationData, index) => {
         hourDiv.appendChild(hourDivIcon);
         hourDiv.appendChild(hourDivTemp);
         hourlyDisplay.appendChild(hourDiv);
+        hourlyDisplay.id = 'hoursOfDay';
 
         h++;
     }

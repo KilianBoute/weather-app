@@ -201,7 +201,7 @@ h3{
 .hour-card{
     display:flex;
     flex-direction: column;
-    
+
 }
 
 footer{
@@ -222,6 +222,7 @@ footer{
         padding: 1rem;
         background-color: rgba(6, 26, 64, .1);
         border-radius: 1rem;
+        overflow-x: scroll;
     }
 } 
 
