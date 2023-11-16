@@ -4,7 +4,7 @@
 //      -Add error catches $$$
 //      -Add list with possible locations for input name $$$
 // -Call api for weather data for location $$$
-// -Create elements in DOM to display weather information
+// -Create elements in DOM to display weather information $$$
 // -Make them asynchronous $
 
 import { weatherCodes as weatherCodes } from "./codes.js";
@@ -74,11 +74,11 @@ const displayLocations = (location) => {
 }
 
 const getWeatherForLocation = (longitude, latitude, name, area, country) => {
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude="
-        + longitude + "&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto")
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude="+ longitude + 
+    "&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto")
         .then(response => response.json())
         .then(data => {
-            displayWeatherForLocation(data.daily, name, area, country);
+            displayWeatherForLocation(data, name, area, country);
         });
 }
 
@@ -87,38 +87,73 @@ const displayWeatherForLocation = (locationData, name, area, country) => {
     const locationHeader = document.createElement('h1');
         locationHeader.textContent = name;
     const locationArea = document.createElement('h3');
-        locationArea.textContent = area + ", " + country;
+        locationArea.textContent = area + " " + country;
 
     locationInfo.appendChild(locationHeader);
     locationInfo.appendChild(locationArea);
 
-    for (let i = 0; i < locationData.time.length; i++) {
+    for (let i = 0; i < locationData.daily.time.length; i++) {
         const cardElement = document.createElement('div');
             cardElement.className = "card";
         const cardDay = document.createElement('h3');
-        let timeDate = new Date(locationData.time[i]);
+        let timeDate = new Date(locationData.daily.time[i]);
             if(i === 0){cardDay.textContent = "Today";}
             else {cardDay.textContent = weekdays[timeDate.getDay()];}
             
         const cardImage = document.createElement('img');
-        const imgSrc = weatherCodes[locationData.weather_code[i]].day.image;
+        const imgSrc = weatherCodes[locationData.daily.weather_code[i]].day.image;
             cardImage.src = imgSrc;
 
         const cardDesc = document.createElement('span');
-            cardDesc.textContent = weatherCodes[locationData.weather_code[i]].day.description;
+            cardDesc.textContent = weatherCodes[locationData.daily.weather_code[i]].day.description;
 
         const cardTemp = document.createElement('span');
-        let meanTemp = (locationData.temperature_2m_max[i] + locationData.temperature_2m_min[i]) / 2;
+        let meanTemp = (locationData.daily.temperature_2m_max[i] + locationData.daily.temperature_2m_min[i]) / 2;
             cardTemp.textContent =meanTemp.toFixed(2) + "°C ";
        
         cardElement.appendChild(cardDay);
         cardElement.appendChild(cardImage);
         cardElement.appendChild(cardDesc);
         cardElement.appendChild(cardTemp);
-        cardContainer.appendChild(cardElement);
 
+        cardElement.hourly = locationData.hourly;
+        cardElement.addEventListener('click', () => {
+            cardContainer.appendChild(displayHourlyWeather(locationData, i));
+        })
+        cardContainer.appendChild(cardElement);
+ 
     }
+
     // weatherItem.textContent = locationData.temperature_2m_max;
+}
+
+const displayHourlyWeather = (locationData, index) => {
+    console.log(locationData);
+
+    const hourlyDisplay = document.createElement('div');
+    hourlyDisplay.classList.add('hidden');
+    hourlyDisplay.classList.add('hour-display');
+    let h = 0;
+    for(let i = index*24; i < (index+1)*24; i++){
+     
+        const hourDiv = document.createElement('div');
+            hourDiv.classList.add('hour-card');
+        const hourDivTime = document.createElement('span');
+            hourDivTime.textContent = locationData.hourly.time[i].substring(11);
+        const hourDivIcon = document.createElement('img');
+            hourDivIcon.src = (h<20 && h>5) ? weatherCodes[locationData.hourly.weather_code[i]].night.image : weatherCodes[locationData.hourly.weather_code[i]].day.image;
+            
+        const hourDivTemp = document.createElement('span');
+            hourDivTemp.textContent = locationData.hourly.temperature_2m[i] + "°C";
+
+        hourDiv.appendChild(hourDivTime);
+        hourDiv.appendChild(hourDivIcon);
+        hourDiv.appendChild(hourDivTemp);
+        hourlyDisplay.appendChild(hourDiv);
+
+        h++;
+    }
+    return hourlyDisplay;
 }
 
 async function getWeatherOnSubmit(location) {
@@ -151,4 +186,37 @@ searchBarForm.addEventListener('keyup', (e) => {
     }
 })
 
-getWeatherOnSubmit("Ghent");
+ getWeatherOnSubmit("Ghent");
+
+const getGeoLocation = () => {
+// Check if geolocation is supported by the browser
+if ("geolocation" in navigator) {
+    // Prompt user for permission to access their location
+    navigator.geolocation.getCurrentPosition(
+      // Success callback function
+      (position) => {
+        // Get the user's latitude and longitude coordinates
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+  
+        // Do something with the location data, e.g. display on a map
+        console.log(`Latitude: ${lat}, longitude: ${lng}`);
+        locationInfo.innerHTML = "";
+        cardContainer.innerHTML = "";
+        getWeatherForLocation(lng, lat, "Current location", "", "");
+      },
+      // Error callback function
+      (error) => {
+        // Handle errors, e.g. user denied location sharing permissions
+        console.error("Error getting user location:", error);
+        getWeatherOnSubmit("Ghent");
+      }
+    );
+  } else {
+    // Geolocation is not supported by the browser
+    console.error("Geolocation is not supported by this browser.");
+    getWeatherOnSubmit("Ghent");
+  }
+}
+
+//getGeoLocation();

@@ -1,10 +1,15 @@
+@font-face {
+    font-family: "Cabin";
+    src: url("Cabin/static/Cabin-Regular.ttf");
+}
+
 :root{
     --font-color: #F8E8D0;
 }
 
 body{
     min-height: 100dvh;
-    padding: 1rem;
+    padding: 1rem 1rem 0 1rem;
     margin: 0;
     background: rgb(28,125,177);
     /* background: linear-gradient(180deg, rgba(28,125,177,1) 0%, rgba(212,234,237,1) 100%); */
@@ -13,6 +18,7 @@ body{
     backdrop-filter: blur(50px);
     color: var(--font-color);
     overflow-y: scroll;
+    font-family: "Cabin";
 }
 
 header{
@@ -86,8 +92,10 @@ header{
     top: 2rem;
     left: -1px;
     width: 100%;
-    background-color: #2280B1;
-    backdrop-filter: blur(100px);
+    background: linear-gradient(#50a6cf, #6a8d9d);
+    backdrop-filter: blur(10px);
+    -webkit-box-shadow: inset 0px 5px 30px -10px rgb(0, 94, 255); 
+    box-shadow: inset 0px 5px 30px -10px #406171;
     display: flex;
     flex-direction: column;
     border: 1px solid whitesmoke;
@@ -110,11 +118,15 @@ header{
     min-height: 2rem;
     gap: 1rem;
     padding-left: .5rem;
-    border-top: 1px solid whitesmoke;
+    border-top: 1px solid rgba(6, 26, 255, .1);
 }
 
 .location-item:hover{
     cursor: pointer;
+}
+
+main{
+    min-height: 80dvh;
 }
 
 #weather-display{
@@ -141,7 +153,26 @@ header{
     padding: 1rem;
     background-color: rgba(6, 26, 64, .1);
     border-radius: 1rem;
+    position: relative;
 }
+
+/* Rain animation try:  */
+/* .card::after{
+    overflow: hidden;
+    content: '';
+    position: absolute;
+    background-size: contain;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+}
+
+.card:hover::after{
+    background-image: url('https://media.geeksforgeeks.org/wp-content/uploads/20200828184719/rain-300x300.png');
+    animation: drop 1s linear infinite;
+}  */
 
 .card span{
     margin-top: 1rem;
@@ -159,16 +190,51 @@ header{
 
 h3{
     margin: 0;
+    margin-bottom: .5rem;
+}
+
+
+.hour-display{
+    margin-bottom: 3rem;
+}
+
+.hour-card{
+    display:flex;
+    flex-direction: column;
+    
+}
+
+footer{
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
 }
 
 @media (min-width: 750px){
     #cards-container{
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(7, 200px);
+    overflow-x: scroll;
+    }
+    .hour-display{
+        grid-column: 1 / 8;
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        background-color: rgba(6, 26, 64, .1);
+        border-radius: 1rem;
     }
 } 
 
-@media (min-width: 1000px){
-    #cards-container{
-    grid-template-columns: repeat(7, 1fr);
+
+@keyframes drop {
+    0% {
+      transform: translateY(-20px);
     }
-} 
+    100% {
+
+      transform: translate(20px, 40px);
+    }
+}
+
+
+  
