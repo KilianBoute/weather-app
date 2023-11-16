@@ -95,6 +95,7 @@ const displayWeatherForLocation = (locationData, name, area, country) => {
     for (let i = 0; i < locationData.daily.time.length; i++) {
         const cardElement = document.createElement('div');
             cardElement.className = "card";
+            cardElement.selected = false;
         const cardDay = document.createElement('h3');
         let timeDate = new Date(locationData.daily.time[i]);
             if(i === 0){cardDay.textContent = "Today";}
@@ -118,11 +119,21 @@ const displayWeatherForLocation = (locationData, name, area, country) => {
 
         cardElement.hourly = locationData.hourly;
         cardElement.addEventListener('click', () => {
+
+            cardContainer.childNodes.forEach(element => {
+                if(element.selected === true) {
+                    element.selected = false;
+                    element.classList.remove('selected');
+                }
+            });
+            cardElement.selected = true;
+            cardElement.classList.add('selected');
             const removeDisplay = document.getElementById('hoursOfDay');
             if(removeDisplay){
                 cardContainer.removeChild(removeDisplay);
             }
             cardContainer.appendChild(displayHourlyWeather(locationData, i));
+            
         })
         cardContainer.appendChild(cardElement);
  
