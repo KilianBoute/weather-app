@@ -132,9 +132,19 @@ const displayWeatherForLocation = (locationData, name, area, country) => {
             if(removeDisplay){
                 cardContainer.removeChild(removeDisplay);
             }
-            cardContainer.appendChild(displayHourlyWeather(locationData, i));
+            const newHourlyDisplay = displayHourlyWeather(locationData, i);
+            // To change layout depending on window width:
+            // var windowLarge = window.matchMedia("(min-width: 700px)");
+            // if(windowLarge.matches){
+            //     newHourlyDisplay.classList.add('hour-display');
+            // } else {
+            //     newHourlyDisplay.classList.add('hour-display-overlay')
+            // }
+            newHourlyDisplay.classList.add('hour-display');
+            cardContainer.appendChild(newHourlyDisplay);
             
         })
+        cardElement.tabindex=0;
         cardContainer.appendChild(cardElement);
  
     }
@@ -146,8 +156,8 @@ const displayHourlyWeather = (locationData, index) => {
     console.log(locationData);
 
     const hourlyDisplay = document.createElement('div');
-    hourlyDisplay.classList.add('hidden');
-    hourlyDisplay.classList.add('hour-display');
+
+
     let h = 0;
     for(let i = index*24; i < (index+1)*24; i++){
      
@@ -164,9 +174,11 @@ const displayHourlyWeather = (locationData, index) => {
         hourDiv.appendChild(hourDivTime);
         hourDiv.appendChild(hourDivIcon);
         hourDiv.appendChild(hourDivTemp);
+    
         hourlyDisplay.appendChild(hourDiv);
+        hourDiv.tabindex=0;
         hourlyDisplay.id = 'hoursOfDay';
-
+        
         h++;
     }
     return hourlyDisplay;

@@ -198,28 +198,16 @@ h3{
 }
 
 
-.hour-display{
-    margin-bottom: 3rem;
-}
-
-.hour-card{
-    display:flex;
-    flex-direction: column;
-
-}
-
-footer{
-    text-align: center;
-    padding-top: 2rem;
-    padding-bottom: 1rem;
-}
-
-@media (min-width: 750px){
-    #cards-container{
+#cards-container{
+    display: grid;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 2rem;
     grid-template-columns: repeat(7, 200px);
     overflow-x: scroll;
-    }
-    .hour-display{
+}
+
+.hour-display{
         grid-column: 1 / 8;
         display: flex;
         gap: 1rem;
@@ -227,6 +215,9 @@ footer{
         background-color: rgba(6, 26, 64, .2);
         border-radius: 0 0 1rem 1rem;
         overflow-x: scroll;
+        animation: 1s ease-in-out linear;
+        margin-bottom: 3rem;
+        animation: 0.5s ease-in-out linear;
     }
 
     .selected{
@@ -236,6 +227,31 @@ footer{
         transform: scaleY(107.4%);
         overflow: hidden;
     }
+
+.hour-card{
+    display:flex;
+    flex-direction: column;
+
+}
+
+.hour-display-overlay{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    overflow-x: scroll;
+    background-color: red;
+}
+
+footer{
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+}
+
+@media (min-width: 700px){
+
 } 
 
 
