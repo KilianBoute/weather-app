@@ -214,7 +214,7 @@ searchBarForm.addEventListener('keyup', (e) => {
     }
 })
 
-getWeatherOnSubmit("Ghent");
+//getWeatherOnSubmit("Ghent");
 
 const getGeoLocation = () => {
     // Check if geolocation is supported by the browser
@@ -247,4 +247,4 @@ const getGeoLocation = () => {
     }
 }
 
-//getGeoLocation();
+getGeoLocation();
