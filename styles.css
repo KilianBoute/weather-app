@@ -17,7 +17,6 @@ body {
     background-size: cover;
     backdrop-filter: blur(50px);
     color: var(--font-color);
-    overflow-y: scroll;
     font-family: "Cabin";
 }
 
@@ -147,6 +146,9 @@ h1 {
     width: 100%;
     gap: 1rem;
     margin-top: 2rem;
+    grid-template-columns: repeat(7, 200px);
+    overflow-x: auto;
+    user-select: none;
 }
 
 .card {
@@ -204,18 +206,12 @@ h3 {
 }
 
 
-#cards-container {
-    display: grid;
-    width: 100%;
-    gap: 1rem;
-    margin-top: 2rem;
-    grid-template-columns: repeat(7, 200px);
-    overflow-x: scroll;
-}
 
 .hour-display {
+    font-size: 0.75rem;
     grid-column: 1 / 8;
     display: flex;
+    justify-content: center;
     gap: 1rem;
     padding: 1rem;
     background-color: rgba(6, 26, 64, .2);
@@ -224,6 +220,11 @@ h3 {
     animation: 1s ease-in-out linear;
     margin-bottom: 3rem;
 
+}
+
+.hour-display img {
+    max-width: 80%;
+    margin: auto;
 }
 
 .hour-display:hover {
@@ -253,20 +254,16 @@ h3 {
             rgba(6, 26, 64, .2) 100%);
 }
 
+.selected:hover ~ .hour-display{
+    background: linear-gradient(180deg,
+    rgba(6, 26, 64, .2) 0%,
+    rgba(6, 26, 64, .3) 100%);
+}
+
 .hour-card {
     display: flex;
     flex-direction: column;
 
-}
-
-.hour-display-overlay {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    overflow-x: scroll;
-    background-color: red;
 }
 
 footer {
@@ -274,9 +271,6 @@ footer {
     padding-top: 2rem;
     padding-bottom: 1rem;
 }
-
-@media (min-width: 700px) {}
-
 
 @keyframes select {
     0% {
