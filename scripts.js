@@ -5,15 +5,13 @@
 //      -Add list with possible locations for input name $$$
 // -Call api for weather data for location $$$
 // -Create elements in DOM to display weather information $$$
-// -Make them asynchronous $
+// -Make them asynchronous $$$
 
 import { weatherCodes as weatherCodes } from "./codes.js";
 
-const main = document.querySelector('main');
 const searchBarForm = document.querySelector("#search-bar");
 const searchInput = document.querySelector('#search-input');
 const locationDisplay = document.querySelector('#location-display');
-const weatherDisplay = document.querySelector('#weather-display');
 const locationInfo = document.querySelector('#locationInfo');
 const cardContainer = document.querySelector('#cards-container');
 
@@ -145,13 +143,9 @@ const displayWeatherForLocation = (locationData, name, area, country) => {
             newHourlyDisplay.classList.add('hour-display');
             cardContainer.appendChild(newHourlyDisplay);
         })
-        
         cardContainer.appendChild(cardElement);
         cardElement.tabIndex = 0;
-
     }
-
-    // weatherItem.textContent = locationData.temperature_2m_max;
 }
 
 const displayHourlyWeather = (locationData, index) => {
@@ -202,9 +196,6 @@ async function getWeatherOnSubmit(location) {
 
 searchBarForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    // locationInfo.innerHTML = "";
-    // cardContainer.innerHTML = "";
-    // locationDisplay.innerHTML = "";
     getWeatherOnSubmit(searchInput.value);
     cardContainer.firstChild.click();
 })
@@ -212,17 +203,16 @@ searchBarForm.addEventListener('submit', (e) => {
 searchBarForm.addEventListener('keyup', (e) => {
     if (e.key !== "Enter") {
         e.preventDefault();
-        //     locationInfo.innerHTML = "";
-        //     cardContainer.innerHTML = "";
-        //    locationDisplay.innerHTML = "";
         if (getLocationList(searchInput.value)) {
             getLocationList(searchInput.value);
         }
     }
 })
 
+// Placeholder for faster loading:
 //getWeatherOnSubmit("Ghent");
 
+//Get user location:
 const getGeoLocation = () => {
     // Check if geolocation is supported by the browser
     if ("geolocation" in navigator) {
@@ -256,10 +246,9 @@ const getGeoLocation = () => {
 
 getGeoLocation();
 
-console.log(cardContainer.dataset)
+console.log(cardContainer.dataset);
 
-
-
+// Drag card container instead of scroll trial:
 // const handleOnDown = e => {
 //     cardContainer.dataset.mouseDownAt = e.clientX;
 // }
