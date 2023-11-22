@@ -189,7 +189,7 @@ async function getWeatherOnSubmit(location) {
     locationInfo.innerHTML = "";
     cardContainer.innerHTML = "";
     getWeatherForLocation(data.results[0].longitude, data.results[0].latitude, data.results[0].name, data.results[0].admin1, data.results[0].country);
-    } catch (err){
+    } catch(err){
         console.log(err);
     }
 }

@@ -9,6 +9,7 @@
 
 body {
     min-height: 100dvh;
+    min-width: 100lvw;
     padding: 1rem 1rem 0 1rem;
     margin: 0;
     background: rgb(28, 125, 177);
